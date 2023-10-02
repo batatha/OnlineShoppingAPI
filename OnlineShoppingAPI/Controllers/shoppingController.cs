@@ -10,7 +10,7 @@ using OnlineShoppingAPI.Collection;
 
 namespace OnlineShoppingAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1.0/[controller]")]
     [ApiController]
     public class shoppingController : ControllerBase
     {
@@ -85,7 +85,7 @@ namespace OnlineShoppingAPI.Controllers
         public async Task<ActionResult<Login>> PostLogin(Login login)
         {
             await _mongoDBService.CreateUserLogin(login);
-            return CreatedAtAction(nameof(GetLogin), new { id = login.Id }, login);
+            return CreatedAtAction(nameof(GetLogin), new { id = login._id }, login);
         }
 
         public class ProductsLoginWrapper

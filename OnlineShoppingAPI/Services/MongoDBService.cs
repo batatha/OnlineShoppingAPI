@@ -48,7 +48,7 @@ namespace OnlineShopping.Services
             {
                 if (!IsEmaildExists(registration.Email))
                 {
-                    if (registration.Password == registration.Confirmpassword)
+                    if (registration.Password == registration.Confirmpassword && registration.Password==login.Password)
                     {
                         await _registrationCollection.InsertOneAsync(registration);
                         await _loginCollection.InsertOneAsync(login);
@@ -116,8 +116,16 @@ namespace OnlineShopping.Services
 
         public async Task<string> CreateProduct(Products products,Login login)
         {
+            bool IsAdminTrue = await IsUserAdmin(login.Loginid, login.Password);
+            if (IsAdminTrue)
+            {
                 await _productsCollection.InsertOneAsync(products);
                 return "Product Created!";
+            }
+            else
+            {
+                return "Not Allowed";
+            }
         }
 
         public async Task<string> UpdateProduct(Products product,Login login)
@@ -197,14 +205,7 @@ namespace OnlineShopping.Services
 
 
 
-            if (orderIdCheck != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return orderIdCheck;
         }
         private async Task<bool> IsUserExist(string loginid,string password)
         {

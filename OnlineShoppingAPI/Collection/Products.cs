@@ -9,6 +9,8 @@ namespace OnlineShoppingAPI.Collection
     {
         [BsonId]
         [BsonElement("_id")]
+        public ObjectId _id { get; set; }
+        [Required]
         public int ProductId { get; set; }
         [Required]
         [BsonElement("ProductName")]

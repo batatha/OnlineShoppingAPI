@@ -9,7 +9,7 @@ namespace OnlineShopping.Collection
     {
         [BsonId]
         [BsonElement("_id")]
-        public int Id { get; set; }
+        public ObjectId _id { get; set; }
         [Required]
         [BsonElement("Fname")]
         public string? Fname { get; set; }
