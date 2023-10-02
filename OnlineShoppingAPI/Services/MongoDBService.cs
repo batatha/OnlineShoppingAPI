@@ -197,12 +197,11 @@ namespace OnlineShopping.Services
 
         public async Task<bool> ProductExists(int pid, Orders order)
         {
-            var filter1 = Builders<Products>.Filter.Eq(x => x.ProductId, pid);
-
-
-
+            //var filter1 = Builders<Products>.Filter.Eq(x => x.ProductId, pid);
+            var filter2 = Builders<Products>.Filter.Eq(x => x.StockCount, pid);
+            Console.Write(filter2);
             var orderIdCheck = _productsCollection.Find(p => p.ProductId == order.ProductId).Any();
-
+         
 
 
             return orderIdCheck;
@@ -229,7 +228,10 @@ namespace OnlineShopping.Services
             bool IsProdTrue = await ProductExists(product.ProductId, orders);
             if (IsProdTrue && IsUserTrue)
             {
-
+                FilterDefinition<Products> filter = Builders<Products>.Filter.Eq("StockCount", product.StockCount);
+                var desc = product.StockCount - 1;
+                UpdateDefinition<Products> updateStockCount = Builders<Products>.Update.Set("StockCount", desc);
+                await _productsCollection.UpdateOneAsync(filter, updateStockCount);
                 await _ordersCollection.InsertOneAsync(orders);
                 return "Order created";
             }
